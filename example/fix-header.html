@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fix-header</title>
+    <style>
+        #app{
+            position: relative;
+            height: 400px;
+            width: 500px;
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid green;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        table{
+            width: 100%;
+        }
+        .header-wrap{
+            overflow: hidden;
+        }
+        .header-wrap table{
+            table-layout: fixed;
+        }
+        .body-wrap{
+            height: 300px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100%;
+        }
+        th, td{
+            border: 1px solid green;
+        }
+        
+    </style>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="header-wrap">
+            <table>
+                <colgroup>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>表头1</th>
+                        <th>表头1</th>
+                        <th>表头1</th>
+                        <th>表头1</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="body-wrap">
+            <table>
+                <colgroup>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                    <col width="25%"></col>
+                </colgroup>
+                <tr v-for="item in body" :key="item">
+                    <td>表头1</td>
+                    <td>表头11111</td>
+                    <td>表头11111111</td>
+                    <td>表头111111111111</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    body: []
+                }
+            },
+            created() {
+                this.body = new Array(100).fill()
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./handsontable.full.min.css" rel="stylesheet" />
+    <script src="./handsontable.full.min.js"></script>
+</head>
+
+<body>
+    <div id="example1"></div>
+    <script>
+        var example1 = document.getElementById('example1');
+
+        var hot = new Handsontable(example1, {
+            data: Handsontable.helper.createSpreadsheetData(5, 10),
+            colHeaders: true,
+            rowHeaders: true,
+            nestedHeaders: [
+                ['A', { label: 'B', colspan: 8 }, 'C'],
+                ['D', { label: 'E', colspan: 4 }, { label: 'F', colspan: 4 }, 'G'],
+                ['H', { label: 'I', colspan: 2 }, { label: 'J', colspan: 2 }, { label: 'K', colspan: 2 }, { label: 'L', colspan: 2 }, 'M'],
+                ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W']
+            ]
+        });
+    </script>
+</body>
+
+</html>
