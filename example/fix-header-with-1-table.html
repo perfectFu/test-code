@@ -33,42 +33,28 @@
         th, td{
             border: 1px solid green;
         }
+        thead{
+            background: gray;
+        }
         
     </style>
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
     <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> -->
     <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
 </head>
 <body>
     <div id="app">
-        <div class="header-wrap">
-            <table>
-                <colgroup>
-                    <col width="50"></col>
-                    <col width="100"></col>
-                    <col width="150"></col>
-                    <col width="50"></col>
-                    <col width="15"></col>
-                </colgroup>
-                <thead>
+        <div class="body-wrap" ref="scrollRef">
+            <table cellspacing="0" cellpadding="0">
+                <thead :style="headStyle">
                     <tr>
-                        <th>表头1</th>
-                        <th>表头1</th>
-                        <th>表头1</th>
-                        <th>表头1</th>
-                        <th width="15px"></th>
+                        <th>head1</th>
+                        <th>head1</th>
+                        <th>head1</th>
+                        <th>head1</th>
                     </tr>
                 </thead>
-            </table>
-        </div>
-        <div class="body-wrap">
-            <table>
-                <colgroup>
-                    <col width="25%"></col>
-                    <col width="25%"></col>
-                    <col width="25%"></col>
-                    <col width="25%"></col>
-                </colgroup>
                 <body>
                     <tr v-for="item in body" :key="item">
                         <td>表头1</td>
@@ -85,11 +71,36 @@
             el: '#app',
             data() {
                 return {
-                    body: []
+                    body: [],
+                    top: 0
                 }
             },
-            created() {
+            mounted() {
                 this.body = new Array(100).fill()
+                const scrollRef = this.$refs['scrollRef']
+                const tHandler = _.throttle(this.scrollHandler, 60)
+                scrollRef.addEventListener('scroll', this.scrollHandler, {
+                    capture: false,
+                    passive: true
+                })
+            },
+            computed: {
+                // 动态设置thead的滚动至位置，老模拟固定表头
+                headStyle() {
+                    return `
+                        transform: translate3d(0px, ${this.top}px, 0px);
+                        -ms-transform: translate3d(0px, ${this.top}px, 0px);
+                        -moz-transform: translate3d(0px, ${this.top}px, 0px);
+                    `
+                }
+            },
+            methods: {
+                scrollHandler() {
+                    const scrollRef = this.$refs['scrollRef']
+                    this.top = scrollRef.scrollTop
+                    console.log(this.top)
+
+                }
             }
         })
     </script>
