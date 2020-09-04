@@ -13,16 +13,25 @@
     <script src="../node_modules/codemirror/mode/javascript/javascript.js"></script>
     <script src="../node_modules/codemirror/addon/hint/show-hint.js"></script>
     <script src="../node_modules/codemirror/addon/hint/javascript-hint.js"></script>
-    <script src="../node_modules/codemirror/keymap/sublime.js"></script>
+    <!-- <script src="../node_modules/codemirror/keymap/sublime.js"></script>
     <script src="../node_modules/codemirror/keymap/emacs.js"></script>
-    <script src="../node_modules/codemirror/keymap/vim.js"></script>
+    <script src="../node_modules/codemirror/keymap/vim.js"></script> -->
 
 </head>
 
 <body>
     <textarea id="editor"></textarea>
     <script>
+        window.faq = {
+            add(x, y) {
+                return x+ y
+            },
+            minus(x, y) {
+                return x - y
+            }
+        }
         const textarea = document.getElementById('editor')
+        let isCMFocused = false
         const editor = CodeMirror.fromTextArea(textarea, {
             mode: 'javascript',
             theme: 'monokai',
@@ -36,10 +45,24 @@
                 "Ctrl-F7": function () { console.log("自定义事件"); },
             }
         })
-        editor.on('change', () => {
-            console.log('change')
+        editor.on('cursorActivity', () => {
+            console.log('cursorActivity')
             editor.showHint()
         })
+        // editor.on('change', () => {
+        //     console.log('change')
+        //     if(isCMFocused) {
+        //         editor.showHint()
+        //     }
+        // })
+        // editor.on('focus', function() {
+        //     console.log('focus')
+        //     isCMFocused = true
+        // })
+        // editor.on('blur', function() {
+        //     console.log('blur')
+        //     isCMFocused = false
+        // })
     </script>
 </body>
 
