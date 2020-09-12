@@ -1,3 +1,132 @@
 <div class="dingding">
-  <h1>{{}}</h1>
+  <p>{{conf.name}}</p>
+  <style>
+    .form-item {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    .label {
+      width: 100px;
+      text-align: right;
+      margin-right: 20px;
+    }
+    .action-card {
+      display: flex;
+    }
+    .action-type {
+      width: 40px;
+      margin-right: 40px;
+      box-sizing: border-box;
+      text-align: center;
+      border: 1px solid #666;
+    }
+    .action-type .action-type-label {
+      padding: 10px;
+    }
+    .action-type-label.active {
+      background-color: blue;
+      color: white;
+    }
+    .action-type .action-type-label:not(:last-child) {
+      border-bottom: 1px solid #666;
+    }
+  </style>
+  <!--自定义钉钉消息模板-->
+  <div class="ding-wrap">
+    <div class="form-item">
+      <label class="label">消息类型</label>
+      <div class="content">
+        <select
+          ng-model="conf.msgType"
+          ng-change="changeMsgType()"
+          placeholder="请选择"
+        >
+          <option ng-repeat="x in msgTypeList" value="{{x.value}}">
+            {{x.label}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <!--卡片形式-->
+    <div class="action-card" ng-show="conf.msgType === 'actionCard'">
+      <div class="action-type">
+        <div
+          ng-click="setActionType('single')"
+          class="action-type-label"
+          ng-class="conf.actionType === 'single' ? 'active' : ''"
+        >
+          整体跳转
+        </div>
+        <div
+          ng-click="setActionType('alone')"
+          class="action-type-label"
+          ng-class="conf.actionType === 'alone' ? 'active' : ''"
+        >
+          独立跳转
+        </div>
+      </div>
+      <div class="action-card-wrap">
+        <div class="form-item">
+          <label class="label">标题</label>
+          <div class="content">
+            <input ng-model="conf.title"></input>
+          </div>
+        </div>
+        <div class="form-item">
+          <label class="label">内容</label>
+          <div class="content">
+            <textarea id="markdown"></textarea>
+          </div>
+        </div>
+        <!--整体跳转设置跳转标题和地址-->
+        <div ng-if="conf.actionType === 'single'">
+          <div class="form-item">
+            <label class="label">跳转标题</label>
+            <div class="content">
+              <input ng-model="conf.singleTitle"></input>
+            </div>
+          </div>
+        </div>
+        <div ng-if="conf.actionType === 'single'">
+          <div class="form-item">
+            <label class="label">跳转地址</label>
+            <div class="content">
+              <input ng-model="conf.singleUrl"></input>
+            </div>
+          </div>
+        </div>
+        <!--独立跳转设置标题或者地址-->
+        <div ng-if="conf.actionType === 'alone'">
+          <div class="form-item">
+            <label class="label">排列方式</label>
+            <div class="content">
+              <select
+                ng-model="conf.msgType"
+                ng-change="changeMsgType()"
+                placeholder="请选择"
+              >
+                <option ng-repeat="x in msgTypeList" value="{{x.value}}">
+                  {{x.label}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--文本-->
+    <div ng-show="conf.msgType === 'text'">
+      <div class="form-item">
+        <label class="label">消息内容</label>
+        <div class="content">
+          <textarea ng-model="conf.textContent" rows="4"></textarea>
+        </div>
+      </div>
+      <div class="form-item">
+        <label class="label">样例</label>
+        <div class="content">xxx</div>
+      </div>
+    </div>
+  </div>
 </div>
