@@ -10,7 +10,14 @@ angular.module('app').directive('parent', ['$compile', function() {
         title: '', // 卡片标题
         content: '', // 内容
         singleTitle: '',
-        singleUrl: ''
+        singleUrl: '',
+        btnOrientation: 0,
+        btnJsonList: [
+          {
+            title: '1',
+            actionUrl: '2'
+          }
+        ]
       }
     }
   }
@@ -29,6 +36,7 @@ angular.module('app').directive('dingding', ['$compile', function() {
       var conf = scope.conf
       console.log(conf);
 
+      // 消息类型
       scope.msgTypeList = [
         {
           label: '文本',
@@ -37,6 +45,17 @@ angular.module('app').directive('dingding', ['$compile', function() {
         {
           label: '卡片',
           value: 'actionCard'
+        }
+      ]
+      // 独立跳转时，按钮的排列方式
+      scope.btnOrientationList = [
+        {
+          label: '竖直排列',
+          value: 0
+        },
+        {
+          label: '横向排列',
+          value: 1
         }
       ]
 
@@ -58,6 +77,8 @@ angular.module('app').directive('dingding', ['$compile', function() {
         scope.conf.actionType = type
       }
 
+
+      // markdown编辑器
       var simplemde = new SimpleMDE({
         element: document.getElementById("markdown"),
         autofocus: true

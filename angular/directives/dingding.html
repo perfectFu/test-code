@@ -102,14 +102,30 @@
             <label class="label">排列方式</label>
             <div class="content">
               <select
-                ng-model="conf.msgType"
-                ng-change="changeMsgType()"
+                ng-model="conf.btnOrientation"
                 placeholder="请选择"
               >
-                <option ng-repeat="x in msgTypeList" value="{{x.value}}">
+                <option ng-repeat="x in btnOrientationList" value="{{x.value}}">
                   {{x.label}}
                 </option>
               </select>
+            </div>
+          </div>
+          <div class="btn-groups-wrap">
+            <p>跳转设置</p>
+            <div ng-repeat="btn in conf.btnJsonList">
+              <div class="form-item">
+                <label class="label">跳转标题</label>
+                <div class="content">
+                  <input ng-model="btn.title"></input>
+                </div>
+              </div>
+              <div class="form-item">
+                <label class="label">跳转地址</label>
+                <div class="content">
+                  <input ng-model="btn.actionUrl"></input>
+                </div>
+              </div>
             </div>
           </div>
         </div>
