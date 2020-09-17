@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="main" style="width: 600px; height: 400px"></div>
+		<input type="file" id="file" />
+		<button id="download">下载</button>
+		<script src="../echart-dist/echarts.min.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.1.0/axios.min.js"></script>
+		<script>
+			// 基于准备好的dom，初始化echarts实例
+			var myChart = echarts.init(document.getElementById("main"));
+			var downbtn = document.getElementById("download");
+			var file = document.getElementById("file");
+
+			// 指定图表的配置项和数据
+			var option = {
+				title: {
+					text: "ECharts 入门示例",
+				},
+				tooltip: {},
+				legend: {
+					data: ["销量"],
+				},
+				xAxis: {
+					data: [
+						"衬衫",
+						"羊毛衫",
+						"雪纺衫",
+						"裤子",
+						"高跟鞋",
+						"袜子",
+					],
+				},
+				yAxis: {},
+				series: [
+					{
+						name: "销量",
+						type: "bar",
+						data: [5, 20, 36, 10, 10, 20],
+					},
+				],
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+
+			// 将base64转化为blob数据
+			var convertBase64UrlToBlob = function (urlData) {
+				var arr = urlData.split(",");
+				var mime = arr[0].match(/:(.*?);/)[1];
+				var bytes = window.atob(urlData.split(",")[1]); //去掉url的头，并转换为byte
+
+				//处理异常,将ascii码小于0的转换为大于0
+				var ab = new ArrayBuffer(bytes.length);
+				var ia = new Uint8Array(ab);
+				for (var i = 0; i < bytes.length; i++) {
+					ia[i] = bytes.charCodeAt(i);
+				}
+
+				return new Blob([ab], { type: mime });
+			};
+
+			// 获取文件后缀
+			var getFileExt = function (urlData) {
+				var arr = urlData.split(",");
+				var mime = arr[0].match(/:(.*?);/)[1];
+				return mime.replace("image/", "");
+			};
+
+			function downImg(src) {
+				// let img = new Image();
+				// img.src = src;
+				// document.body.append(img);
+				let imgBlob = convertBase64UrlToBlob(src);
+				let imgExt = getFileExt(src);
+				let formData = new FormData();
+				let filename = +new Date() + "." + imgExt;
+				console.log("imgBlob", imgBlob);
+				formData.append("file", imgBlob, filename);
+				upload(formData);
+			}
+
+			function upload(formData) {
+				console.log(formData);
+
+				axios
+					.post("/upload", formData, {
+						// headers: {
+						// 	"Content-Type": "multipart/form-data;charset=UTF-8",
+						// },
+					})
+					.then((res) => {})
+					.catch((err) => {});
+			}
+
+			downbtn.addEventListener("click", function () {
+				let src = myChart.getDataURL();
+				downImg(src);
+			});
+			file.addEventListener("change", (e) => {
+				let file = e.target.files[0];
+				let formdata = new FormData();
+				formdata.append("file", file);
+				upload(formdata);
+			});
+		</script>
+	</body>
+</html>
