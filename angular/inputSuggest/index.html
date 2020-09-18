@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>带输入建议的下拉输入框</title>
+
+		<style>
+			.my-input-wrap {
+				position: relative;
+			}
+			.input-list-wrap {
+				display: flex;
+				flex-grow: 1;
+				flex-wrap: wrap;
+				border: 1px solid #ebebeb;
+				padding: 6px 6px 0 6px;
+				font-size: 12px;
+				box-sizing: border-box;
+			}
+			.select-user-wrap {
+				position: relative;
+				display: inline-block;
+			}
+			.select-user {
+				width: 50px;
+				text-align: center;
+				display: inline-block;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				border: 1px solid #ebebeb;
+				height: 30px;
+				line-height: 30px;
+				margin-right: 6px;
+				margin-bottom: 6px;
+			}
+			.select-user:hover {
+				cursor: pointer;
+			}
+			.delete-user {
+				position: absolute;
+				padding: 10px;
+				width: 10px;
+				top: -12px;
+				right: -5px;
+			}
+			.suggest-list-wrap {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				border: 1px solid #ebebee;
+				margin: 0;
+				padding: 0;
+				font-size: 12px;
+				max-height: 300px;
+				overflow: auto;
+			}
+			.input-wrap-parent {
+				display: flex;
+			}
+			.input-wrap {
+				flex-grow: 1;
+				outline: none;
+				border: 1px solid #ebebeb;
+				border-radius: 4px;
+				height: 30px;
+				padding: 0 10px;
+				margin-bottom: 6px;
+			}
+			.suggest-user-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				line-height: 30px;
+				padding: 0 10px;
+				border-bottom: 1px solid #ebebee;
+			}
+			.suggest-user-item:last-child {
+				border-bottom: none;
+			}
+			.suggest-user-item:hover {
+				background-color: #ebebeb;
+			}
+			.select-img {
+				width: 24px;
+				height: 18px;
+			}
+			.close-btn {
+				display: flex;
+				align-items: center;
+				font-size: 14px;
+				padding: 0 10px;
+				cursor: pointer;
+				background-color: #ebebee;
+			}
+		</style>
+	</head>
+	<body ng-app="myApp">
+		<div class="my-input-wrap" ng-controller="InputCtrl">
+			<div class="input-wrap-parent">
+				<div class="input-list-wrap">
+					<div
+						class="select-user-wrap"
+						ng-repeat="user in selectUserList"
+					>
+						<span class="select-user">{{user.name}}</span>
+						<img
+							ng-click="deleteUser(user)"
+							src="./delete.png"
+							class="delete-user"
+						/>
+					</div>
+					<input
+						class="input-wrap"
+						ng-model="keyword"
+						ng-change="inputChange()"
+						placeholder="请输入"
+					/>
+				</div>
+				<div
+					ng-click="closeSuggest()"
+					class="close-btn"
+					ng-show="showSuggest"
+				>
+					关闭
+				</div>
+			</div>
+			<div
+				class="suggest-list-wrap"
+				ng-show="showSuggest"
+				style="top: {{udomHeight}}px"
+			>
+				<div
+					class="suggest-user-item"
+					ng-show="filterUserList.length === 0"
+				>
+					未找到相关人员
+				</div>
+				<div class="suggest-list">
+					<div
+						class="suggest-user-item"
+						ng-click="selectUser(user)"
+						ng-repeat="user in filterUserList track by user.value"
+					>
+						{{user.name}}
+						<img
+							ng-show="user.selected"
+							src="./complete.png"
+							class="select-img"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../angular.min.js"></script>
+		<script src="./index.js"></script>
+	</body>
+</html>
