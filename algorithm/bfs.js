@@ -24,7 +24,7 @@ class Queue{
     pushMany(arr) {
         this.list = this.list.concat(arr)
     }
-    // 出对
+    // 出队
     pop() {
         return this.list.shift()
     }
